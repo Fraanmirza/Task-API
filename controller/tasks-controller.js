@@ -3,8 +3,9 @@ const { createCustomError } = require("../errors/custom-error");
 
 const getAllTasks = async (req, res, next) => {
   try {
-    const tasks = await Task.find();
-    res.json({ tasks });
+    const { userID } = req.user;
+    const tasks = await Task.find({ createdBy: userID });
+    res.status(200).json({ tasks });
   } catch (error) {
     console.log(error);
     next(error);
@@ -14,8 +15,8 @@ const getAllTasks = async (req, res, next) => {
 const createTask = async (req, res, next) => {
   try {
     const { name } = req.body;
-    console.log(name);
-    const result = await Task.create({ name });
+    const { userID } = req.user;
+    const result = await Task.create({ createdBy: userID, name });
     res.json({ result });
   } catch (error) {
     console.log(error);
@@ -26,7 +27,6 @@ const createTask = async (req, res, next) => {
 const getTask = async (req, res, next) => {
   try {
     const { id: taskID } = req.params;
-    console.log(taskID);
     const task = await Task.findById({ _id: taskID });
     if (!task) {
       return next(createCustomError(`no task found with ID: ${taskID}`, 404));
@@ -40,7 +40,6 @@ const getTask = async (req, res, next) => {
 const updateTask = async (req, res, next) => {
   try {
     const { id: taskID } = req.params;
-    console.log(taskID);
     const task = await Task.findByIdAndUpdate({ _id: taskID }, req.body, {
       new: true,
       runValidators: true,
@@ -57,7 +56,6 @@ const updateTask = async (req, res, next) => {
 const deleteTask = async (req, res, next) => {
   try {
     const { id: taskID } = req.params;
-    console.log(taskID);
     const task = await Task.findByIdAndDelete({ _id: taskID });
     if (!task) {
       return next(createCustomError(`no task found with ID: ${taskID}`, 404));
