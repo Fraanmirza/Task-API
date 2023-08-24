@@ -14,6 +14,12 @@ const helmet = require("helmet");
 const cors = require("cors");
 const { xss } = require("express-xss-sanitizer");
 const expressLimiter = require("express-rate-limit");
+
+//swagger
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger.yaml");
+
 //json body-parser
 app.use(express.json());
 
@@ -33,8 +39,10 @@ app.use(cors());
 app.use(xss());
 
 app.get("/", (req, res) => {
-  res.send("Task API's");
+  res.send('<h1>Task api</h1> <a href= "/api-docs">Documentation</a>');
 });
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 //routes
 app.use("/api/v1/auth", authRoutes);

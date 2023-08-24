@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: Task Manager API
+  contact: {}
+  version: "1.0"
+servers:
+  - url: https://taskapi-jiqd.onrender.com/api/v1
+    variables: {}
+paths:
+  /tasks:
+    get:
+      tags:
+        - Tasks
+      summary: get all tasks
+      operationId: getalltasks
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+    post:
+      tags:
+        - Tasks
+      summary: create task
+      operationId: createtask
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/createtaskrequest"
+                - example:
+                    name: new task 2
+            example:
+              name: new task 2
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /tasks/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: the job id
+    get:
+      tags:
+        - Tasks
+      summary: get single task
+      operationId: getsingletask
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+    patch:
+      tags:
+        - Tasks
+      summary: update task
+      operationId: updatetask
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/updatetaskrequest"
+                - example:
+                    name: new task done
+                    completed: true
+            example:
+              name: new task done
+              completed: true
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+    delete:
+      tags:
+        - Tasks
+      summary: delete task
+      operationId: deletetask
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: "{{url}}/auth/register"
+      operationId: "{{url}}/auth/register"
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/urlauthregisterrequest"
+                - example:
+                    name: Faizan
+                    email: faizan@gmail.com
+                    password: secret
+            example:
+              name: Faizan
+              email: faizan@gmail.com
+              password: secret
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: "{{url}}/auth/login"
+      operationId: "{{url}}/auth/login"
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/urlauthloginrequest"
+                - example:
+                    email: Farhan@gmail.com
+                    password: secret
+            example:
+              email: Farhan@gmail.com
+              password: secret
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+components:
+  schemas:
+    createtaskrequest:
+      title: createtaskrequest
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: new task 2
+    updatetaskrequest:
+      title: updatetaskrequest
+      required:
+        - name
+        - completed
+      type: object
+      properties:
+        name:
+          type: string
+        completed:
+          type: boolean
+      example:
+        name: new task done
+        completed: true
+    urlauthregisterrequest:
+      title: urlauthregisterrequest
+      required:
+        - name
+        - email
+        - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: Faizan
+        email: faizan@gmail.com
+        password: secret
+    urlauthloginrequest:
+      title: urlauthloginrequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: Farhan@gmail.com
+        password: secret
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+  - name: Misc
+    description: ""
+  - name: Tasks
+    description: ""
+  - name: Auth
+    description: ""
